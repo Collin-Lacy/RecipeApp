@@ -15,7 +15,6 @@ const useForm = (callback, validate) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setValues(values => ({...values, [event.target.name]: event.target.value}));
     setIsSubmitting(true);
   };
 
