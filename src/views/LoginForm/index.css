@@ -1,7 +1,5 @@
-.login-form {
-  height: 600px;
-  width: 400px;
-  align-items: center;
-  justify-content: center;
+.loginForm {
+  width: 450px;
+  height: 400px;
 }
 

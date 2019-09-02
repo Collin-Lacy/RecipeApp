@@ -1,16 +1,21 @@
 import * as React from 'react';
-import { hot } from 'react-hot-loader/root';
-import { HashRouter as Router, Route, Link } from 'react-router-dom';
+import { HashRouter, Switch, Route} from 'react-router-dom';
 
-import AuthenticateService from '../../../src/services/AuthenticateService';
+import Header from '@containers/Header';
+import LoginForm from '@views/LoginForm';
 
 import './index.css';
 
 const App = () => (
-  <React.Fragment>
-    <AuthenticateService />
-  </React.Fragment>
+  <HashRouter>
+    <React.Fragment>
+      <Header />
+      <Switch>
+        <Route path='/' exact/>
+        <Route path='/login' component={LoginForm}/>
+      </Switch>
+    </React.Fragment>
+  </HashRouter>
 );
 
-export { App };
-export default hot(App);
+export default App;

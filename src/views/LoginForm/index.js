@@ -1,61 +1,72 @@
 import * as React from 'react';
+import useForm from '@hooks/useForm';
+import validate from '@validations/LoginFormValidation';
 
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 
-import { spacing } from '@material-ui/system';
 import './index.css';
 
-const LoginForm = ({ state, handleChange }) => (
-  <Grid
-    container
-    alignItems='center'
-    justify='center'
-  >
-    <form className='login-form' >
-      <TextField
-	name='email'
-	type='email'
-	label='Email Address'
-	value={state.values.email}
-	onChange={handleChange}
-	fullWidth
-      />
-	
-      <TextField
-	name='password'
-	type='password'
-	label='Password'
-	value={state.values.password}
-	onChange={handleChange}
-	fullWidth
-      />
-      
-      <FormControlLabel
-        control={
-          <Checkbox
-	    name='rememberMe'
-            type='checkbox'
-	    onChange={handleChange}
-            value={state.values.rememberMe}
-	  />
-        }
-        label='Remember me'
-      />
+const LoginForm = () => {
+    const {
+      values,
+      errors,
+      handleChange,
+      handleSubmit
+    } = useForm(login, validate);
 
-      <Button
-        type='submit'
-        variant='contained'
-        size='large'
-	fullWidth
-      >
-        Login
-      </Button>
+    function login() {
+        console.log("login here");
+    }
 
-    </form>
-  </Grid>
-);
+    return (
+        <Grid
+            container
+            alignItems='center'
+            justify='center'
+        >
+            <form className='loginForm' onSubmit={handleSubmit}>
+                <h1> 
+                    Welcome
+                </h1>
+
+                <TextField
+                    name='email'
+                    type='email'
+                    label='Email Address'
+                    helperText={errors.email || ' '}
+                    error={!errors.email ? false : true}
+                    value={values.email || ''}
+                    onChange={handleChange}
+                    autoComplete='off'
+                    noValidate
+                    fullWidth
+                />
+
+                <TextField
+                    name='password'
+                    type='password'
+                    label='Password'
+                    helperText={errors.password || ' '}
+                    error={!errors.password ? false : true}
+                    value={values.password || ''}
+                    onChange={handleChange}
+                    fullWidth
+                />
+
+                <Button
+                    type='submit'
+                    variant='contained'
+                    size='medium'
+                    fullWidth
+                >
+                  Login
+                </Button>
+
+            </form>
+        </Grid>
+    );
+}
+
 export default LoginForm;
