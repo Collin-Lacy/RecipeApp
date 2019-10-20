@@ -1,27 +1,68 @@
 import * as React from 'react';
 import styled from 'styled-components';
+const PUBLIC_URL = "http://127.0.0.1:63423";
 
-const PUBLIC_URL = "http://127.0.0.1:53241";
+import { Link } from 'react-router-dom';
 
-const StyledRecipe = styled.div`
+const StyledRecipeCard = styled.div`
     display: flex;
-    justify-content: center;
-    
+    flex-direction: column;
+
     /* testing delete later */
-    background-color: grey;
-
+    border: 1px solid black;
+    
     font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
-
-    width: 200px;
-    height: 133px;
+    background-color: white;
+    width: 320px;
+    height: 450px;
 `;
 
 const Img = styled.img`
-    border-radius: 25px;
-    background-size: cover;
+    width: 100%;
+    max-height: 200px;
 `;
 
-const Recipe = props => {
+const CardBody = styled.div`
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 1em;
+
+    p {
+        font-size: .75rem;
+    }
+`;
+
+const CardIcons = styled.div`
+    display: flex;
+    justify-content: space-between;
+`;
+
+const Button = styled.button`
+    height: 35px;
+    width: 50%;
+    align-self: center;
+    font-size: 1rem;
+    border-radius: 20px;
+    background-color: rgb(20,20,20);
+    color: white;
+    a {
+        text-decoration: none;
+        color: white;
+    }
+    
+`;
+
+const Divider = styled.hr`
+    margin-top: .5em;
+    margin-bottom: .5em;
+    border: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.15);
+`;
+
+const RecipeCard = props => {
+    
     const {
         uuid, 
         title, 
@@ -30,23 +71,43 @@ const Recipe = props => {
         servings,
         prepTime,
         cookTime,
-        postDate,
-        editDate,
-        ingredients,
-        directions
     } = props;
 
     return (
-        <StyledRecipe>
-            <div>
-                <img src={PUBLIC_URL + images.small}/>
+        <StyledRecipeCard>
+            <Img src={PUBLIC_URL + images.full}/>
+
+            <CardBody>
+                <h3>{title}</h3>
+
+                <Divider />
+
+                <CardIcons>
+                    <div>
+                        <span>Prep Time</span>
+                        <p>{prepTime}</p>
+                    </div>
+
+                    <div>
+                        <span>Cook Time</span>
+                        <p>{cookTime}</p>
+                    </div>
+
+                    <div>
+                        <span>Servings</span>
+                        <p>{servings}</p>
+                    </div>
+                </CardIcons>
+
                 <div>
-                    <h3>{title}</h3>
-                    <div>{description}</div>
+                    <p>{description}</p>
                 </div>
-            </div>
-        </StyledRecipe>
+
+                <Button> <Link to={'/recipes/' + uuid}> View Recipe  </Link></Button>
+                
+            </CardBody>
+        </StyledRecipeCard>
     )
 }
 
-export default Recipe;
+export default RecipeCard;

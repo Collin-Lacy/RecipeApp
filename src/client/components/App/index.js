@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { createGlobalStyle } from 'styled-components';
-import { HashRouter, Switch, Route} from 'react-router-dom';
-import Layout from '@containers/Layout';
-
-import RecipeList from '@components/RecipeList';
+import styled from 'styled-components';
 import "regenerator-runtime/runtime";
+
+import { BrowserRouter, Switch, Route} from 'react-router-dom';
+import RecipeList from '@components/RecipeList';
+import RecipePage from '@components/RecipePage';
 
 const GlobalStyle = createGlobalStyle`
   /* Remove browser defaults */
@@ -25,23 +26,25 @@ const GlobalStyle = createGlobalStyle`
   html {
     height: 100%;
     width: 100%;
-    background-color: rgb(51,51,51);
     font-size: 18px;
   }
+`;
+
+const Main = styled.main`
+    display: flex;
+    min-height: 100vh;
 `;
 
 const App = () => {
   return (
     <>
       <GlobalStyle />
-      <HashRouter>
-        <Layout />
+      <BrowserRouter>
           <Switch>
-            <Route path='/' exact/>
-            <Route path='/recipes' />
-            <Route path='/specials'/>
+            <Route exact path='/' component={RecipeList} />
+            <Route path='/recipes/:uuid' component={RecipePage} />
           </Switch>
-      </HashRouter>
+      </BrowserRouter>
     </>
   );
 };

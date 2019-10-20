@@ -1,21 +1,25 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import Recipe from '@components/Recipe';
+import RecipeCard from '@components/Recipe';
+
+const PUBLIC_URL = "http://127.0.0.1:63423/recipes";
 
 const StyledRecipeList = styled.div`
+    flex: 1;
     display: grid;
     /* This will result in 2 columns, each one of 1fr */
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     /* This will result in 2 rows, each one of 250px */
-    grid-template-rows: repeat(6, 200px);
+    grid-template-rows: repeat(auto-fill, 500px);
 
-    gap: 150px;
-    padding-left: 6em;
-    padding-top: 3em;
-    /* testing delete later */
-    background-color: white;
+    justify-items: center;
+    align-items: center;
+    
+    padding: 1em;
+
     min-height: 100%;
+    background-color: rgb(20,20,20);
 `;
 
 const RecipeList = () => {
@@ -23,7 +27,7 @@ const RecipeList = () => {
     const [recipes, setRecipes] = useState({});
 
     const fetchData = async () => {
-        const response = await fetch("http://127.0.0.1:53241/recipes");
+        const response = await fetch(PUBLIC_URL);
         response
             .json()
             .then(response => setRecipes(response))
@@ -33,12 +37,13 @@ const RecipeList = () => {
     useEffect(() => {
         fetchData();
     }, []);
-    
+
+
     return (
         <StyledRecipeList>
             {           
                 Object.keys(recipes).map((recipe) => 
-                    <Recipe key={recipe} {...recipes[recipe]} />
+                    <RecipeCard key={recipe} {...recipes[recipe]} />
                 )
             }
         </StyledRecipeList>

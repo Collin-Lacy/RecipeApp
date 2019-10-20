@@ -21,7 +21,7 @@
       "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js"
     }
   },
-  "proxy": "http://127.0.0.1:53241",
+  "proxy": "http://127.0.0.1:63423",
   "keywords": [],
   "author": "",
   "license": "ISC",
