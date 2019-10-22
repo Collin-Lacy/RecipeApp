@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css?family=Lato&display=swap');
+
+/* Remove browser defaults */
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    height: 100%;
+    width: 100%;
+    font-family: 'Lato', sans-serif;
+    font-size: 18px;
+}
+
+/* Remove browser defaults for button */
+button {
+    border: 0;
+    background: transparent;
+    font-family: inherit;
+    font-size: 1em;
+    cursor: pointer;
+}

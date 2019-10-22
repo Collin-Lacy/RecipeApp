@@ -1,89 +1,17 @@
-import * as React from 'react';
-import styled from 'styled-components';
-const PUBLIC_URL = "http://127.0.0.1:63423";
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { PUBLIC_URL, RECIPES_URL, SPECIALS_URL } from '@config/index.js';
+import useFetch from '@hooks/useFetch';
 
-const StyledRecipePage = styled.div`
-    display: flex;
-    min-height: 100vh;
-    padding: 1em;
-    background-color: rgb(205,205,205);
-`;
-
-const Ingredients = styled.div`
-    flex: 25%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    margin: 0 1em 0 5em;
-    background-color: rgb(242,242,242);
-    h2 {
-        padding: 1em;
-    }
-`;
-
-const Ingredient = styled.div`
-    min-height: 75px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    border-top: 1px solid rgba(20,20,20, 0.15);
-`;
-
-const Directions = styled.div`
-    flex: 75%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: rgb(205,205,205);
-    h2 {
-        padding: 1em;
-    }
-`;
-
-const Direction = styled.div`
-    height: 60px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-`;
-
-const Img = styled.img`
-    width: 100%;
-    max-height: 200px;
-`;
+import './index.css';
 
 const RecipePage = props => {
-    const [hasError, setErrors] = useState(false);
-    const [recipe, setRecipe] = useState({});
-    const [specials, setSpecials] = useState({});
+    const recipe_response = useFetch(RECIPES_URL + props.match.params.uuid);
+    const specials_response = useFetch(SPECIALS_URL);
 
-    const fetchRecipes = async () => {
-        const response = await fetch(PUBLIC_URL + '/recipes/' + props.match.params.uuid);
-        response
-            .json()
-            .then(response => setRecipe(response))
-            .catch(error => setErrors(error));
-    }
+    const recipe = recipe_response.response;
+    const specials = specials_response.response;
 
-    const fetchSpecials = async () => {
-        const response = await fetch(PUBLIC_URL + '/specials');
-        response
-            .json()
-            .then(response => setSpecials(response))
-    }
-
-    useEffect(() => {
-        fetchRecipes();
-        fetchSpecials();
-    }, []);
-
-    const { ingredients, directions } = {...recipe};
+    const { title, description, ingredients, directions, images } = recipe;
 
     if (specials && ingredients) {
         for (let x = 0; x < ingredients.length; x++) {
@@ -97,36 +25,81 @@ const RecipePage = props => {
     }
 
     return (
-        <StyledRecipePage>
-            <Ingredients>
-                <h2>Ingredients</h2>
+        <div id='recipe-page'>
+            <div id='header'>
                 {
-                    ingredients &&
-                        ingredients.map((ingredient, index) => 
-                            <Ingredient key={index}>
-                                <p>{ingredient.amount} {ingredient.measurement} {ingredient.name}</p>
+                    images &&
+                    <img src={PUBLIC_URL + recipe.images.medium}/>
+                }
+                <div id='header-info'>
 
-                                <div>
-                                    <p>{ingredient.special ? ingredient.special.type : ''}</p>
-                                    <p>{ingredient.special ? ingredient.special.title : ''}</p>
-                                    <div dangerouslySetInnerHTML={ingredient.special ? {__html: ingredient.special.text} : {__html: ''}} />
-                                </div>
-                            </Ingredient>
+                    <div>
+                        <h2>{recipe.title}</h2>
+                        <span>{recipe.description}</span>
+                    </div>
+
+                    <div className='header-icons'>
+                        <div className='icons'>
+                            <span>Prep Time</span>
+                            <p>{recipe.prepTime}</p>
+                        </div>
+
+                        <div className='icons'>
+                            <span>Cook Time</span>
+                            <p>{recipe.cookTime}</p>
+                        </div>
+
+                        <div className='icons'>
+                            <span>Servings</span>
+                            <p>{recipe.servings}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>            
+                <div id='ingredients'>
+                    <h2>Ingredients</h2>
+                    {
+                        ingredients &&
+                            ingredients.map((ingredient, index) =>
+                                <>
+                                    <div className='ingredient' key={index}>
+                                        <p>{ingredient.name}</p>
+                                        <p>{ingredient.amount} {ingredient.measurement}</p>
+                                    </div>
+                                    {
+                                        ingredient.special &&
+                                        <div className='special'>
+                                            <p>Special Offer!</p>
+                                            <p>{ingredient.special.title}</p>
+                                            <p>{ingredient.special.type.toUpperCase()}</p>
+                                            <p dangerouslySetInnerHTML={{__html: ingredient.special.text}} />
+                                        </div>
+                                    }
+                                </>
+                            )
+                    }
+                </div>
+
+                <div id='directions'>
+                    <h2>Directions</h2>
+                    {
+                        directions &&
+                        directions.map((direction, index) =>
+                            <div className='direction' key={index}>
+                                <p>
+                                    <span>{index}</span>
+                                    {direction.instructions}
+                                </p>
+                            </div>
                         )
-                }
-            </Ingredients>
-            <Directions>
-                <h2>Directions</h2>
-                {
-                    directions &&
-                    directions.map((direction, index) =>
-                        <Direction key={index}>
-                            <p>{index} {direction.instructions}</p>
-                        </Direction>
-                    )
-                }
-            </Directions>
-        </StyledRecipePage>
+                    }
+                </div>
+
+            </div>
+
+        </div>
     )
 }
 
