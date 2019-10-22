@@ -1,0 +1,11 @@
+#recipe-list {
+    flex: 1;
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(auto-fill, 500px);
+
+    justify-items: center;
+    align-items: center;
+    min-height: 100%;
+}
