@@ -1,11 +1,6 @@
 # Recipe App
 
 ## Usage
-
-**Note:**
-The urls inside config/index.js will most likely need to be changed.
-Additionally the url for the `proxy` option in webpack.config.js will need to be changed to the same due to a CORS issue.   
-
 Install and start the api in the server directory
 ```
 cd src/server
